@@ -8,7 +8,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % res_ext.cls
 %
-% \documentstyle{res}
+% \documentstyle{res_ext}
 %
 % Copyright (c) 1988 by Michael DeCorte
 % Permission to copy all or part of this work is granted, provided
@@ -62,7 +62,8 @@
 %
 %   \address{text}
 %		defines your address
-%		this can be called twice if you have two addresses
+%		this can be called up to three times
+%   if you have more than one address
 %		use \\'s to indicate where either line breaks or
 %		comas should go
 %
@@ -181,7 +182,7 @@
 % write docs to tell people how to use this
 
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{res}[2000/05/19 v1.4b Resume class]
+\ProvidesClass{res_ext}[2013/11/13 v0.1 Extended Resume class]
 
 %\DeclareOption{11pt}{\renewcommand\@ptsize{1}}
 %\DeclareOption{12pt}{\renewcommand\@ptsize{2}}
@@ -214,6 +215,7 @@
 % prints a centered name with the address centered
 % or the two address on opposite sides of the page
 %
+% TODO : Handle @addressthree
 \def\@printcentername{\begingroup
   % print the name centered
   \leavevmode\hbox to \textwidth{\hfil\@tablebox{\namefont\@name}\hfil}\par
@@ -249,6 +251,7 @@
     \leavevmode\hbox to \textwidth
       {\hfill\vbox{\hbox{\@addressone}
 		   \hbox{\@addresstwo}
+		   \hbox{\@addressthree}
 		  }%
       }\par
   }
@@ -491,13 +494,20 @@
 \def\@name{}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% use this to define your address, this may be called more than once.
+% use this to define your address, this may be called up to thrice.
 %
 \let\@addressone\relax
 \let\@addresstwo\relax
+\let\@addressthree\relax
 
 \def\address#1{
-  \@ifundefined{@addressone}{\def\@addressone{#1}}{\def\@addresstwo{#1}}}
+  \@ifundefined{@addressone}
+    {\def\@addressone{#1}}
+    {\@ifundefined{@addresstwo}
+      {\def\@addresstwo{#1}}
+      {\def\@addressthree{#1}}
+    }
+  }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % if you want to print your name and address is a slightly
